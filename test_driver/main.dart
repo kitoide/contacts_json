@@ -7,5 +7,5 @@ void main() {
   enableFlutterDriverExtension();
   app.main();
 
-  runApp(new MyApp(false));
+  runApp(new MyApp(true));
 }

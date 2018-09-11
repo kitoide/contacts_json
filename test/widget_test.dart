@@ -4,10 +4,8 @@
 // find child widgets in the widget tree, read text, and verify that the values of widget properties
 // are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:contacts_json/main.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const List<String> _listNames = <String>[
@@ -21,7 +19,7 @@ void main() {
 
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(new MyApp(true));
+    await tester.pumpWidget(new MyApp());
 
 //    print("load");
 //    await Future.delayed(Duration(seconds: 5));
@@ -32,6 +30,5 @@ void main() {
 //
 //      expect(item, findsWidgets);
 //    }
-
   });
 }

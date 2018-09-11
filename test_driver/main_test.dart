@@ -3,14 +3,12 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-
   const List<String> _listNames = <String>[
-    "Fred F",
-    "Wilma F",
-    "Barney R",
-    "Bambam",
-    "Betty R",
-    "Dino",
+    "Test",
+    "Test 2",
+    "Test 3",
+    "Test 4",
+    "Test 5",
   ];
 
   group("tests", () {
@@ -35,10 +33,6 @@ void main() {
         print("Searching for ${_listNames[i]}");
 
         expect(await driver.getText(item), isNotEmpty);
-        await driver.tap(item);
-
-//        await driver.waitFor(item);
-
         await driver.scrollUntilVisible(item, find.text(_listNames[i]));
       }
 

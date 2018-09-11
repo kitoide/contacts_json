@@ -1,22 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-List<Post> parseContacts(String responseBody) {
-  final parsed =
-      json.decode(responseBody)["contacts"].cast<Map<String, dynamic>>();
-
-  return parsed.map<Post>((json) => Post.fromJson(json)).toList();
-}
-
-Future<List<Post>> fetchPhotos(http.Client client) async {
-  final response =
-      await client.get("https://paul-hammant.github.io/json_doc/contacts.json");
-
-  return parseContacts(response.body);
-}
 
 class Post {
   final String name;
@@ -30,6 +12,69 @@ class Post {
       name: json['name'],
       times: json['times'],
       lastActive: json['last_active'],
+    );
+  }
+}
+
+class ContactsGridView extends StatefulWidget {
+  ContactsGridView(
+      {Key key,
+      @required this.contacts,
+      this.selectedItem,
+      this.height,
+      this.crossAxisCount,
+      @required this.callback,
+      @required this.onRefreshCallback})
+      : super(key: key);
+  final List<Post> contacts;
+  final String selectedItem;
+  final Function(String) callback;
+  final VoidCallback onRefreshCallback;
+
+  final double height;
+  final int crossAxisCount;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ContactsGridView(); // TODO: implement createState
+  }
+}
+
+class _ContactsGridView extends State<ContactsGridView> {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      height: widget.height,
+      child: RefreshIndicator(
+        child: GridView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          primary: true,
+          //physics: BouncingScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: widget.crossAxisCount,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0),
+          itemCount: widget.contacts.length,
+          itemBuilder: (context, index) {
+            return CardItem(
+              item: index,
+              contacts: widget.contacts,
+              onTap: () {
+                String selected =
+                    widget.contacts[index].name == widget.selectedItem
+                        ? null
+                        : widget.contacts[index].name;
+                setState(() {
+                  widget.callback(selected);
+                });
+              },
+              selected: widget.selectedItem == widget.contacts[index].name,
+            );
+          },
+        ),
+        onRefresh: widget.onRefreshCallback,
+      ),
     );
   }
 }

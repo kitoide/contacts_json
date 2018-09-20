@@ -1,4 +1,5 @@
-import 'package:contacts_json/contacts_grid_view.dart';
+import 'package:contacts_json/models/post.dart';
+import 'package:contacts_json/widgets/contacts_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 

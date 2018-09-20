@@ -1,20 +1,13 @@
+import 'package:contacts_json/models/post.dart';
 import 'package:flutter/material.dart';
 
-class Post {
-  final String name;
-  final int times;
-  final int lastActive;
-
-  Post({this.name, this.times, this.lastActive});
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      name: json['name'],
-      times: json['times'],
-      lastActive: json['last_active'],
-    );
-  }
-}
+// *********************************************************
+// * Copyright (C) 2018 Paul Hammant <paul@hammant.org>    *
+// *                                                       *
+// * All rights reserved. This file is proprietary and     *
+// * confidential and can not be copied and/or distributed *
+// * without the express permission of Paul Hammant        *
+// *********************************************************
 
 class ContactsGridView extends StatefulWidget {
   ContactsGridView(
@@ -100,34 +93,41 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Border border = Border.all(width: 0.0);
+    BorderSide border  = BorderSide(
+      color: selected ? Colors.blueAccent : Colors.grey,
+      width: selected ? 2.0 : 1.0,
+    );
     double elevation = 0.0;
 
-    if (selected) {
-      border = Border.all(color: Colors.red, width: 2.0);
-      elevation = 5.5;
-    }
     return new GestureDetector(
       child: new Card(
-        shape: border,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          side: border
+        ),
         elevation: elevation,
         child: new GridTile(
           footer: Center(
-            child: Padding(
-              padding: new EdgeInsets.all(5.0),
-              child: new Text(
-                contacts[item].name,
-                style: TextStyle(
-                    fontSize:
-                        MediaQuery.of(context).size.width <= 800 ? 10.0 : 15.0),
-              ),
+            child: new Text(
+              contacts[item].name,
+              style: TextStyle(
+                  fontSize:
+                  MediaQuery.of(context).size.width <= 800 ? 12.0 : 15.0),
             ),
           ),
-          child: new Container(
-            margin:
-                EdgeInsets.only(top: 0.0, bottom: 15.0, left: 0.0, right: 0.0),
-            child: new Icon(Icons.account_circle,
-                color: const Color(0xFF000000), size: 50.0),
+          child: new AspectRatio(
+            aspectRatio: 1.0,
+            child: new Container(
+              margin: EdgeInsets.all(15.0),
+              decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blueAccent,
+                  image: new DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    alignment: FractionalOffset.topCenter,
+                    image: new NetworkImage(contacts[item].pic.trim()),
+                  )),
+            ),
           ),
         ),
       ),
